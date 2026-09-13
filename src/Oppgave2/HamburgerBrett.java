@@ -7,30 +7,35 @@ import java.util.List;
 public class HamburgerBrett {
 
     private int kapasitet;
+    private List<Hamburger> brett = new ArrayList<>();
+
     public HamburgerBrett(int kapasitet) {
         this.kapasitet = kapasitet;
     }
-    private List<Hamburger> brett = new ArrayList<>();
+    public synchronized int nesteBestillingM() {
+        return nesteBestilling++;
+    }
 
     public synchronized void leggTil(Hamburger hamburger) {
-        while(brett.size() >= kapasitet){
+
+        while(brett.size() == kapasitet){
 
             System.out.println(Thread.currentThread().getName() +
                     "(kokk) klar med hamburger, men brett fullt. Venter!");
 
-
-            try{
+            try {
                 wait();
             } catch (InterruptedException e) {
                 return;
             }
 
-            brett.add(hamburger);
-            System.out.println(Thread.currentThread().getName()
-                    + "(kokk) legger på hamburger ◖" + hamburger + "◗. Brett: ◖" + brett + "◗");
-
-            notifyAll();
         }
+        brett.add(hamburger);
+
+        System.out.println(Thread.currentThread().getName()
+                + "(kokk) legger på hamburger ◖" + hamburger + "◗. Brett: ◖" + brett + "◗");
+
+        notifyAll();
     }
 
     public synchronized Hamburger taAv() {
@@ -43,9 +48,11 @@ public class HamburgerBrett {
             } catch (InterruptedException e) {
                 return null;
             }
+
         }
 
-        Hamburger hamburger = brett.get(0);
+        Hamburger hamburger = brett.remove(0);
+
         System.out.println(Thread.currentThread().getName() +
                 "(servitør) tar av hamburger ◖" + hamburger + "◗. Brett: ◖" + brett + "◗");
 

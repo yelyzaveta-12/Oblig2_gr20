@@ -1,13 +1,19 @@
 package Oppgave2;
 
+import java.util.Random;
+
 public class Kokk extends Thread {
 
     private HamburgerBrett brett;
+    private int nesteBestilling = 1;
 
-
-    public Kokk(HamburgerBrett brett, String navn) {
+    public Kokk(HamburgerBrett brett, String navn, int nesteBestilling) {
         this.brett = brett;
         setName(navn);
+        this.nesteBestilling = nesteBestilling;
+    }
+    public synchronized int nesteBestillingM() {
+        return nesteBestilling++;
     }
 
     @Override
@@ -15,17 +21,26 @@ public class Kokk extends Thread {
 
         for(int i = 0; i < 10; i++) {
 
-            Hamburger hamburger = new Hamburger(i);
+
+            Random random = new Random();
+            int tid = random.nextInt(2, 7);
+
+            try {
+                Thread.sleep(tid * 1000);
+            } catch (InterruptedException e) {
+                break;
+            }
+
+            Hamburger b = brett.nesteBestilling();
+
+            Hamburger hamburger = new Hamburger(b);
+
             brett.leggTil(hamburger);
 
             System.out.println(getName() + "(kokk) legger på hamburger  ◖" + i + "◗");
 
 
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                break;
-            }
+
 
         }
     }
