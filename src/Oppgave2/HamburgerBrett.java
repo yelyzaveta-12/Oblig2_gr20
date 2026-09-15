@@ -12,7 +12,9 @@ public class HamburgerBrett {
     public HamburgerBrett(int kapasitet) {
         this.kapasitet = kapasitet;
     }
-    public synchronized int nesteBestillingM() {
+
+    private int nesteBestilling = 1;
+    public synchronized int nesteBestilling() {
         return nesteBestilling++;
     }
 

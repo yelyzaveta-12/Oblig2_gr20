@@ -7,10 +7,9 @@ public class Kokk extends Thread {
     private HamburgerBrett brett;
     private int nesteBestilling = 1;
 
-    public Kokk(HamburgerBrett brett, String navn, int nesteBestilling) {
+    public Kokk(HamburgerBrett brett, String navn) {
         this.brett = brett;
         setName(navn);
-        this.nesteBestilling = nesteBestilling;
     }
     public synchronized int nesteBestillingM() {
         return nesteBestilling++;
@@ -31,9 +30,9 @@ public class Kokk extends Thread {
                 break;
             }
 
-            Hamburger b = brett.nesteBestilling();
 
-            Hamburger hamburger = new Hamburger(b);
+            int bestilling = brett.nesteBestilling();
+            Hamburger hamburger = new Hamburger(bestilling);
 
             brett.leggTil(hamburger);
 
