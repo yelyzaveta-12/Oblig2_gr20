@@ -20,7 +20,7 @@ public class Servitor extends Thread {
             int tid = random.nextInt(2, 7);
 
             try{
-                Thread.sleep(3000);
+                Thread.sleep(1000 * tid);
             } catch (InterruptedException e) {
                 break;
             }

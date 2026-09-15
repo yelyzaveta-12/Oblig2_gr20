@@ -11,7 +11,7 @@ public class Kokk extends Thread {
         this.brett = brett;
         setName(navn);
     }
-    public synchronized int nesteBestillingM() {
+    public synchronized int nesteBestilling() {
         return nesteBestilling++;
     }
 
@@ -25,7 +25,7 @@ public class Kokk extends Thread {
             int tid = random.nextInt(2, 7);
 
             try {
-                Thread.sleep(tid * 1000);
+                Thread.sleep(1000 * tid);
             } catch (InterruptedException e) {
                 break;
             }
